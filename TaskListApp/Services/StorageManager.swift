@@ -10,24 +10,14 @@ import CoreData
 
 
 final class StorageManager {
-    let viewContext = shared.persistentContainer.viewContext
-    var taskList: [Task] = []
-    
     static let shared = StorageManager()
     
     private init() {}
+    var taskList: [Task] = []
+    lazy var viewContext = persistentContainer.viewContext
     
-    func fetchData() {
-        let fetchRequest = Task.fetchRequest()
-        
-        do {
-            taskList = try viewContext.fetch(fetchRequest)
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
     // MARK: - Core Data stack
-    lazy var persistentContainer: NSPersistentContainer = {
+    private let persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TaskListApp")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -36,13 +26,40 @@ final class StorageManager {
         })
         return container
     }()
-
+    
+    //MARK: - Delete Data
+    func delete(task: Task) {
+        viewContext.delete(task)
+        saveContext()
+    }
+    //MARK: - Edit Data
+    func edit(task: Task, to newValue: String) {
+        task.title = newValue
+        saveContext()
+    }
+    //MARK: - Save data
+    func save(taskName: String, completion: @escaping (Task) -> Void) {
+        let task = Task(context: viewContext)
+        task.title = taskName
+        completion(task)
+        saveContext()
+    }
+    
+    //MARK: - Fetch method
+    func fetchData() {
+       let fetchRequest = Task.fetchRequest()
+        do {
+            taskList = try viewContext.fetch(fetchRequest)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     // MARK: - Core Data Saving support
     func saveContext() {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
+        if viewContext.hasChanges {
             do {
-                try context.save()
+                try viewContext.save()
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
@@ -50,5 +67,3 @@ final class StorageManager {
         }
     }
 }
-
-
