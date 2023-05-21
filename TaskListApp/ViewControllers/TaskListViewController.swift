@@ -10,11 +10,11 @@ import UIKit
 final class TaskListViewController: UITableViewController {
     
     private let storageManager = StorageManager.shared
+    private let cellID = "cell"
+    
     private lazy var viewContext = storageManager.viewContext
     private lazy var taskList = storageManager.taskList
     
-    
-    private let cellID = "cell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
