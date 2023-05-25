@@ -12,8 +12,7 @@ final class TaskListViewController: UITableViewController {
     private let storageManager = StorageManager.shared
     private let cellID = "cell"
     
-    private lazy var viewContext = storageManager.viewContext
-    private lazy var taskList = storageManager.taskList
+    private var taskList: [Task] = []
     
     
     override func viewDidLoad() {
@@ -21,7 +20,7 @@ final class TaskListViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         view.backgroundColor = .white
         setupNavigationBar()
-        storageManager.fetchData()
+        fetchData()
     }
     
     // MARK: - UITableViewDataSource
@@ -50,9 +49,8 @@ final class TaskListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let task = taskList[indexPath.row]
-        showAlert(withTitle: "Change task name", andMessage: "write your task here") { [weak self] result in
-            self?.storageManager.edit(task: task, to: result)
-            self?.tableView.reloadData()
+        showAlert(task: task) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
     
@@ -65,32 +63,44 @@ final class TaskListViewController: UITableViewController {
         }
     }
     
-    //MARK: - Alert
-    private func showAlert(
-        withTitle title: String,
-        andMessage message: String,
-        completion: @escaping(String) -> Void
-    ) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let saveAction = UIAlertAction(title: "Save Task", style: .default) { _ in
-            guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
-            completion(task)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        alert.addTextField { textText in
-            textText.placeholder = "New Task"
-        }
-        present(alert, animated: true)
-    }
     //MARK: - @objc method
     @objc private func addNewTask() {
-        showAlert(withTitle: "New Task", andMessage: "What do you want to do?") { [weak self] task in
-            self?.save(task)
+        showAlert()
+    }
+    
+    private func fetchData() {
+        storageManager.fetchData { [unowned self] result in
+            switch result {
+            case .success(let taskList):
+                self.taskList = taskList
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
 }
+
+//MARK: - Alert
+
+extension TaskListViewController {
+    private func showAlert(task: Task? = nil, completion: (() -> Void)? = nil) {
+        let alertFactory = AlertControllerFactory(
+            userAction: task != nil ? .editTask : .newTask,
+            taskTitle: task?.title
+        )
+        let alert = alertFactory.createAlert { [weak self] taskName in
+            if let task, let completion {
+                self?.storageManager.edit(task: task, to: taskName)
+                completion()
+                return
+            }
+            self?.save(taskName)
+        }
+        
+        present(alert, animated: true)
+    }
+}
+
 
 // MARK: - SetupUI
 private extension TaskListViewController {

@@ -12,9 +12,11 @@ import CoreData
 final class StorageManager {
     static let shared = StorageManager()
     
-    private init() {}
-    var taskList: [Task] = []
-    lazy var viewContext = persistentContainer.viewContext
+    private let viewContext: NSManagedObjectContext
+    
+    private init() {
+        viewContext = persistentContainer.viewContext
+    }
     
     // MARK: - Core Data stack
     private let persistentContainer: NSPersistentContainer = {
@@ -46,12 +48,14 @@ final class StorageManager {
     }
     
     //MARK: - Fetch method
-    func fetchData() {
+    func fetchData(completion: (Result<[Task], Error>) -> Void) {
        let fetchRequest = Task.fetchRequest()
+        
         do {
-            taskList = try viewContext.fetch(fetchRequest)
-        } catch {
-            print(error.localizedDescription)
+            let tasks = try viewContext.fetch(fetchRequest)
+            completion(.success(tasks))
+        } catch let error {
+            completion(.failure(error))
         }
     }
     

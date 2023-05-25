@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		78155D332A17951A00C4F694 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78155D322A17951A00C4F694 /* StorageManager.swift */; };
+		7878EAC62A1FC552009EB7D2 /* AlertControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7878EAC52A1FC552009EB7D2 /* AlertControllerFactory.swift */; };
 		A8EFE62D2A15406B00B9D0C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EFE62C2A15406B00B9D0C6 /* AppDelegate.swift */; };
 		A8EFE62F2A15406B00B9D0C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EFE62E2A15406B00B9D0C6 /* SceneDelegate.swift */; };
 		A8EFE6312A15406B00B9D0C6 /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EFE6302A15406B00B9D0C6 /* TaskListViewController.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		78155D322A17951A00C4F694 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		7878EAC52A1FC552009EB7D2 /* AlertControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllerFactory.swift; sourceTree = "<group>"; };
 		A8EFE6292A15406B00B9D0C6 /* TaskListApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskListApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8EFE62C2A15406B00B9D0C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8EFE62E2A15406B00B9D0C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +83,22 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		7878EAC42A1FC35B009EB7D2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A8EFE6352A15406B00B9D0C6 /* TaskListApp.xcdatamodeld */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7878EAC72A1FC557009EB7D2 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				7878EAC52A1FC552009EB7D2 /* AlertControllerFactory.swift */,
+			);
+			path = Factories;
+			sourceTree = "<group>";
+		};
 		A8EFE6202A15406B00B9D0C6 = {
 			isa = PBXGroup;
 			children = (
@@ -102,10 +120,11 @@
 			children = (
 				78155D342A17953300C4F694 /* Services */,
 				78155D2F2A1794DB00C4F694 /* App */,
+				7878EAC72A1FC557009EB7D2 /* Factories */,
 				78155D2E2A1794C100C4F694 /* ViewControllers */,
 				78155D302A1794E200C4F694 /* Sources */,
 				78155D312A1794FA00C4F694 /* Storyboards */,
-				A8EFE6352A15406B00B9D0C6 /* TaskListApp.xcdatamodeld */,
+				7878EAC42A1FC35B009EB7D2 /* Models */,
 			);
 			path = TaskListApp;
 			sourceTree = "<group>";
@@ -183,6 +202,7 @@
 				A8EFE6372A15406B00B9D0C6 /* TaskListApp.xcdatamodeld in Sources */,
 				A8EFE6312A15406B00B9D0C6 /* TaskListViewController.swift in Sources */,
 				78155D332A17951A00C4F694 /* StorageManager.swift in Sources */,
+				7878EAC62A1FC552009EB7D2 /* AlertControllerFactory.swift in Sources */,
 				A8EFE62D2A15406B00B9D0C6 /* AppDelegate.swift in Sources */,
 				A8EFE62F2A15406B00B9D0C6 /* SceneDelegate.swift in Sources */,
 			);
